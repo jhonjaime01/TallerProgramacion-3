@@ -7,6 +7,8 @@
 
 //-------------------------------------------------------
 
+void menuNumeroMagico();
+
 int valorR(char c) {
     switch (c) {
         case 'I' :
@@ -27,7 +29,6 @@ int valorR(char c) {
             return 0;
     }
 }
-
 double f_numRomano(char *roman) {
     int decimal = 0;
     int i;
@@ -47,8 +48,6 @@ double f_numRomano(char *roman) {
     }
     return decimal;
 }
-
-
 void menuNumRoman() {
     char numRoman[12];
     int i = 0;
@@ -68,6 +67,137 @@ void menuNumRoman() {
 }
 
 //-------------------------------------------------------
+
+void menuFactoresPrimos() {
+
+
+    int n, i, count;
+    int vecto_lenth=0;
+    int numbers[1000];
+    int exp[1000];
+
+    printf("Ingrese un numero entero positivo: ");
+    scanf("%d", &n);
+    printf("Los factores primos de %d son: ", n);
+    for (i = 2; i <= n; i++)
+    {
+        count = 0;
+        while (n % i == 0)
+        {
+            count++;
+            n /= i;
+        }
+        if (count != 0)
+        {
+            numbers[vecto_lenth]=i;
+            exp[vecto_lenth]=count;
+            vecto_lenth++;
+        }
+    }
+    printf("\n");
+
+    for (int j = (vecto_lenth-1); j >=0 ; --j) {
+        printf("%d^%d ",numbers[j],exp[j]);
+    }
+}
+
+//-------------------------------------------------------
+
+char* borrarEspacios(char* frase) {
+    char* src = frase;
+    char* dst = frase;
+
+    while (*src) {
+        if (!isspace((unsigned char)*src)) {
+            *dst++ = *src;
+        }
+        src++;
+    }
+    *dst = '\0';
+
+    return frase;
+}
+void menuDeleteSpaces() {
+    char frase[100];
+    printf("Digite una cadena para eliminar los espacios:\n");
+    printf("Cadena: ");
+    fgets(frase, sizeof(frase), stdin);
+    frase[strcspn(frase, "\n")] = '\0';  // Eliminar el salto de línea del final
+
+    borrarEspacios(frase);
+    printf("Cadena sin espacios adicionales: %s\n", frase);
+}
+
+//-----------------------------------------------------------------------
+
+void egolatra(char cadena[]) {
+    int numero = atoi(cadena);
+    int i = 0, auxNum = 0, potencia = strlen(cadena);
+    int *numCadena = (int*)malloc(potencia * sizeof(int));
+
+    for (i = 0; i < potencia; i++) {
+        numCadena[i] = cadena[i] - '0';
+        auxNum += pow(numCadena[i], potencia);
+    }
+    if (auxNum == numero) {
+        printf("El numero %d SI es egolatra\n", numero);
+    } else {
+        printf("El numero %d NO es egolatra\n", numero);
+    }
+}
+int validarNumeros(char cadena[]) {
+    for (int i = 0; i < strlen(cadena) - 1; i++) {
+        if (!isdigit((unsigned char)cadena[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+void menuEgolatra() {
+    char cadena[30];
+    printf("Digite un numero para verificar si es o no egolatra:\n");
+    printf("Numero: ");
+    fgets(cadena, sizeof(cadena), stdin);
+    cadena[strcspn(cadena, "\n")] = '\0';  // Eliminar el salto de línea del final
+
+    if (validarNumeros(cadena) != 0) {
+        egolatra(cadena);
+    } else {
+        printf("Error al digitar el numero\n\n");
+    }
+}
+
+//-----------------------------------------------------------------------
+
+int cantDigits(int num) {
+    int count = 0;
+    while (num != 0) {
+        num /= 10;
+        count++;
+    }
+    return count;
+}
+
+int magicNumber(int num, int s) {
+    int upward[s];
+    int falling[s];
+    int dig;
+
+    int i = 0;
+    while (num > 0) {
+        dig = num % 10;
+        upward[i] = dig;
+        falling[i] = dig;
+        num = num / 10;
+        i++;
+    }
+}
+
+void menuNumeroMagico() {
+
+}
+
+//-----------------------------------------------------------------------
 
 bool validarDate(char *fecha, int dia, int mes) {
     if (strlen(fecha) != 10) {
@@ -102,7 +232,6 @@ bool validarDate(char *fecha, int dia, int mes) {
     }
     return 1;
 }
-
 void menuFechas() {
     char fecha[11];
     int dia, mes, año;
@@ -122,8 +251,56 @@ void menuFechas() {
         printf("El formato de la fecha ingresado es invalido;");
     }
 }
+
 //-------------------------------------------------------
 
+void menuProductoPunto() {
+
+    int n1,n2,i;
+    float result = 0.0;
+    printf("Ingrese la dimension del primer vector: ");
+    scanf("%d", &n1);
+
+    printf("Ingrese la dimension del segundo vector: ");
+    scanf("%d", &n2);
+
+    float vec1[n1],vec2[n2];
+
+    printf("Ingrese los elementos del primer vector:\n");
+    for (i = 0; i < n1; i++)
+    {
+        printf("=> ");
+        scanf("%f", &vec1[i]);
+    }
+
+    printf("Ingrese los elementos del segundo vector:\n");
+
+    for (i = 0; i < n2; i++)
+    {
+        printf("=> ");
+        scanf("%f", &vec2[i]);
+    }
+
+    for (i = 0; i < n1; i++)
+    {
+        result += vec1[i] * vec2[i];
+    }
+
+    printf("[");
+    for (i = 0; i < n1; ++i) {
+        printf("(%f * %f)",vec1[i],vec2[i]);
+
+        if(i<(n1-1)){
+            printf(" + ");
+        }
+    }
+    printf("] = %f \n\n",result);
+
+    printf("El producto punto de los vectores es: %f\n", result);
+
+}
+
+//-------------------------------------------------------
 
 void menuMultArrays() {
     int rows1, rows2, columns1, columns2;
@@ -185,74 +362,6 @@ void menuMultArrays() {
 }
 //-----------------------------------------------------------------------
 
-char* borrarEspacios(char* frase) {
-    char* src = frase;
-    char* dst = frase;
-
-    while (*src) {
-        if (!isspace((unsigned char)*src)) {
-            *dst++ = *src;
-        }
-        src++;
-    }
-    *dst = '\0';
-
-    return frase;
-}
-
-void menuDeleteSpaces() {
-    char frase[100];
-    printf("Digite una cadena para eliminar los espacios:\n");
-    printf("Cadena: ");
-    fgets(frase, sizeof(frase), stdin);
-    frase[strcspn(frase, "\n")] = '\0';  // Eliminar el salto de línea del final
-
-    borrarEspacios(frase);
-    printf("Cadena sin espacios adicionales: %s\n", frase);
-}
-//-----------------------------------------------------------------------
-void egolatra(char cadena[]) {
-    int numero = atoi(cadena);
-    int i = 0, auxNum = 0, potencia = strlen(cadena);
-    int *numCadena = (int*)malloc(potencia * sizeof(int));
-
-    for (i = 0; i < potencia; i++) {
-        numCadena[i] = cadena[i] - '0';
-        auxNum += pow(numCadena[i], potencia);
-    }
-    if (auxNum == numero) {
-        printf("El numero %d SI es egolatra\n", numero);
-    } else {
-        printf("El numero %d NO es egolatra\n", numero);
-    }
-}
-
-
-int validarNumeros(char cadena[]) {
-    for (int i = 0; i < strlen(cadena) - 1; i++) {
-        if (!isdigit((unsigned char)cadena[i])) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-void menuEgolatra() {
-    char cadena[30];
-    printf("Digite un numero para verificar si es o no egolatra:\n");
-    printf("Numero: ");
-    fgets(cadena, sizeof(cadena), stdin);
-    cadena[strcspn(cadena, "\n")] = '\0';  // Eliminar el salto de línea del final
-
-    if (validarNumeros(cadena) != 0) {
-        egolatra(cadena);
-    } else {
-        printf("Error al digitar el numero\n\n");
-    }
-}
-//-----------------------------------------------------------------------
-
-
 void imprimirMatriz(int** matriz, int orden) {
     for (int i = 0; i < orden; i++) {
         for (int j = 0; j < orden; j++) {
@@ -261,7 +370,6 @@ void imprimirMatriz(int** matriz, int orden) {
         printf("\n");
     }
 }
-
 int** generarMatrizMagica(int orden) {
     int** matriz = (int**)malloc(orden * sizeof(int*));
     for (int i = 0; i < orden; i++) {
@@ -301,7 +409,6 @@ int** generarMatrizMagica(int orden) {
 
     return matriz;
 }
-
 void menuMatrizMagica() {
     int orden;
     while (1) {
@@ -323,7 +430,6 @@ void menuMatrizMagica() {
         }
     }
 }
-
 
 //-----------------------------------------------------------------------
 
@@ -352,6 +458,7 @@ void menuPrincipal() {
                 menuNumRoman();
                 break;
             case 2:
+                menuFactoresPrimos();
                 break;
             case 3:
                 menuDeleteSpaces();
@@ -360,11 +467,13 @@ void menuPrincipal() {
                 menuEgolatra();
                 break;
             case 5:
+                menuNumeroMagico();
                 break;
             case 6:
                 menuFechas();
                 break;
             case 7:
+                menuProductoPunto();
                 break;
             case 8:
                 menuMultArrays();

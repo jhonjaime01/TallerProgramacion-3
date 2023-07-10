@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.25)
-project(TallerProgramacion3 C)
+cmake_minimum_required(VERSION 3.24)
+project(TallerProgra3)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(TallerProgramacion3 main.c)
+add_executable(TallerProgra3 main.cpp)

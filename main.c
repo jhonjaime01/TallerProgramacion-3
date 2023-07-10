@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 //-------------------------------------------------------
 
@@ -183,6 +183,147 @@ void menuMultArrays() {
     }
 
 }
+//-----------------------------------------------------------------------
+
+char* borrarEspacios(char* frase) {
+    char* src = frase;
+    char* dst = frase;
+
+    while (*src) {
+        if (!isspace((unsigned char)*src)) {
+            *dst++ = *src;
+        }
+        src++;
+    }
+    *dst = '\0';
+
+    return frase;
+}
+
+void menuDeleteSpaces() {
+    char frase[100];
+    printf("Digite una cadena para eliminar los espacios:\n");
+    printf("Cadena: ");
+    fgets(frase, sizeof(frase), stdin);
+    frase[strcspn(frase, "\n")] = '\0';  // Eliminar el salto de línea del final
+
+    borrarEspacios(frase);
+    printf("Cadena sin espacios adicionales: %s\n", frase);
+}
+//-----------------------------------------------------------------------
+void egolatra(char cadena[]) {
+    int numero = atoi(cadena);
+    int i = 0, auxNum = 0, potencia = strlen(cadena);
+    int *numCadena = (int*)malloc(potencia * sizeof(int));
+
+    for (i = 0; i < potencia; i++) {
+        numCadena[i] = cadena[i] - '0';
+        auxNum += pow(numCadena[i], potencia);
+    }
+    if (auxNum == numero) {
+        printf("El numero %d SI es egolatra\n", numero);
+    } else {
+        printf("El numero %d NO es egolatra\n", numero);
+    }
+}
+
+
+int validarNumeros(char cadena[]) {
+    for (int i = 0; i < strlen(cadena) - 1; i++) {
+        if (!isdigit((unsigned char)cadena[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void menuEgolatra() {
+    char cadena[30];
+    printf("Digite un numero para verificar si es o no egolatra:\n");
+    printf("Numero: ");
+    fgets(cadena, sizeof(cadena), stdin);
+    cadena[strcspn(cadena, "\n")] = '\0';  // Eliminar el salto de línea del final
+
+    if (validarNumeros(cadena) != 0) {
+        egolatra(cadena);
+    } else {
+        printf("Error al digitar el numero\n\n");
+    }
+}
+//-----------------------------------------------------------------------
+
+
+void imprimirMatriz(int** matriz, int orden) {
+    for (int i = 0; i < orden; i++) {
+        for (int j = 0; j < orden; j++) {
+            printf("%d\t", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int** generarMatrizMagica(int orden) {
+    int** matriz = (int**)malloc(orden * sizeof(int*));
+    for (int i = 0; i < orden; i++) {
+        matriz[i] = (int*)malloc(orden * sizeof(int));
+        for (int j = 0; j < orden; j++) {
+            matriz[i][j] = 0;
+        }
+    }
+
+    int numElementos = orden * orden;
+    int fila = 0;
+    int col = orden / 2;
+
+    for (int num = 1; num <= numElementos; num++) {
+        matriz[fila][col] = num;
+        fila--;
+        col++;
+
+        if (fila < 0) {
+            fila = orden - 1;
+        }
+        if (col == orden) {
+            col = 0;
+        }
+        if (matriz[fila][col] != 0) {
+            fila += 2;
+            col--;
+
+            if (fila >= orden) {
+                fila -= orden;
+            }
+            if (col < 0) {
+                col = orden - 1;
+            }
+        }
+    }
+
+    return matriz;
+}
+
+void menuMatrizMagica() {
+    int orden;
+    while (1) {
+        printf("Digite un numero impar para generar una matriz magica\nNumero: ");
+        scanf("%d", &orden);
+        if (orden % 2 != 0) {
+            int** matrizMagica = generarMatrizMagica(orden);
+            printf("Matriz Magica de orden %d:\n", orden);
+            imprimirMatriz(matrizMagica, orden);
+
+            for (int i = 0; i < orden; i++) {
+                free(matrizMagica[i]);
+            }
+            free(matrizMagica);
+
+            break;
+        } else {
+            printf("El numero debe ser impar.\n");
+        }
+    }
+}
+
 
 //-----------------------------------------------------------------------
 
@@ -213,8 +354,10 @@ void menuPrincipal() {
             case 2:
                 break;
             case 3:
+                menuDeleteSpaces();
                 break;
             case 4:
+                menuEgolatra();
                 break;
             case 5:
                 break;
@@ -227,6 +370,7 @@ void menuPrincipal() {
                 menuMultArrays();
                 break;
             case 9:
+                menuMatrizMagica();
                 break;
             case 10:
                 printf("Gracias por utilizar nuestros servicios :).\n");
@@ -242,3 +386,4 @@ int main() {
     menuPrincipal();
     return 0;
 }
+

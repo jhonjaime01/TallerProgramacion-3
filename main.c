@@ -191,9 +191,54 @@ int magicNumber(int num, int s) {
         num = num / 10;
         i++;
     }
-}
 
+    int size = sizeof(falling) / sizeof(falling[0]);
+
+    for (int j = 0; j < size; ++j) {
+        for (int k = j; k < size - 1; ++k) {
+            if (falling[j] < falling[k + 1]) {
+                int aux = falling[j];
+                falling[j] = falling[k + 1];
+                falling[k + 1] = aux;
+            }
+        }
+    }
+
+    for (int j = 0; j < size - 1; ++j) {
+        for (int k = j; k < size - 1; ++k) {
+            if (upward[j] > upward[k + 1]) {
+                int aux = upward[j];
+                upward[j] = upward[k + 1];
+                upward[k + 1] = aux;
+            }
+        }
+    }
+
+    int numFall = 0;
+    for (int j = 0; j < size; ++j) {
+        numFall = (numFall * 10) + falling[j];
+    }
+
+    int numUp = 0;
+    for (int j = 0; j < size; ++j) {
+        numUp = (numUp * 10) + upward[j];
+    }
+
+    return numFall - numUp;
+}
 void menuNumeroMagico() {
+    int num;
+
+    do {
+        printf("Ingrese un numero para comprobar (debe tener mas de un digito): ");
+        scanf("%d", &num);
+    } while (cantDigits(num) <= 1);
+
+    if (magicNumber(num, cantDigits(num)) == num) {
+        printf("El numero, %d es un numero magico!\n", num);
+    } else {
+        printf("El numero, %d no es un numero magico.\n", num);
+    }
 
 }
 
